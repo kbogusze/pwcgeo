@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
-@FeignClient(name = "countryClient", url = "https://raw.githubusercontent.com/mledoze/countries/master" , configuration = FeignConfig.class)
+@FeignClient(name = "countryClient", url = "${country.client.url}" , configuration = FeignConfig.class)
 public interface CountryClient {
 
     @GetMapping(value = "/countries.json" ,produces = MediaType.TEXT_PLAIN_VALUE)

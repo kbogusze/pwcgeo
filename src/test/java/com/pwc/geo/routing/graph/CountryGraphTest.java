@@ -7,8 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class CountryGraphTest {
 
@@ -37,12 +36,13 @@ class CountryGraphTest {
 
     @Test
     void findValidGraphCanMex() {
-        assertTrue(countryGraph.findValidGraph("CAN", "MEX").isPresent());
+        assertNotNull(countryGraph.findValidGraph("CAN", "MEX"));
     }
 
     @Test
     void noValidGraphPolMex() {
-        assertTrue(countryGraph.findValidGraph("POL", "MEX").isEmpty());
+        assertThrows(PathNotFoundException.class,
+                () ->countryGraph.findValidGraph("POL", "MEX"));
     }
 
     @Test

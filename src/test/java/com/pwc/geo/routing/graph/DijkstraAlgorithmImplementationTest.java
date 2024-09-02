@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DijkstraAlgorithmImplementationTest {
 
@@ -39,6 +40,12 @@ class DijkstraAlgorithmImplementationTest {
         List<String> actualPath = new DijkstraAlgorithmImplementation().findShortestPath(countries, "POL", "ITA");
 
         assertEquals(expectedPath, actualPath);
+    }
+
+    @Test
+    void defendAgainstNull() {
+        List<String> actualPath = new DijkstraAlgorithmImplementation().findShortestPath(null, "CAN", "MEX");
+        assertTrue(actualPath.isEmpty());
     }
 
 }

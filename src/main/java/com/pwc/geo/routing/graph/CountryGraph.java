@@ -6,6 +6,11 @@ import com.pwc.geo.routing.exception.PathNotFoundException;
 import java.util.*;
 
 public class CountryGraph {
+    private static final String INVALID_COUNTRY_CODE = "Origin or destination not a valid country code";
+    private static final String INVALID_ORIGIN = "Is not possible to find route from this origin";
+    private static final String INVALID_DESTINATION = "Is not possible to find route to this destination";
+    private static final String ROUTE_NOT_FOUND = "Not possible to find route between origin and destination";
+
     private final Set<String> countrySet;
     private final Map<String, List<String>> countryWithBorders;
     private final List<Map<String, List<String>>> countryGraphList;
@@ -60,20 +65,21 @@ public class CountryGraph {
         }
     }
 
-    public Optional<Map<String, List<String>>> findValidGraph(String origin, String destination) {
+    public Map<String, List<String>> findValidGraph(String origin, String destination) {
         validateCountryCodes(origin, destination);
-        return getCountryGraphRoute(origin, destination);
+        return getCountryGraphRoute(origin, destination)
+                .orElseThrow(() -> new PathNotFoundException(ROUTE_NOT_FOUND));
     }
 
     private void validateCountryCodes(String origin, String destination) {
         if (!countrySet.contains(origin) || !countrySet.contains(destination)) {
-            throw new PathNotFoundException("Origin or destination not a valid country code");
+            throw new PathNotFoundException(INVALID_COUNTRY_CODE);
         }
         if (!countryWithBorders.containsKey(origin)) {
-            throw new PathNotFoundException("Is not possible to find route from this origin");
+            throw new PathNotFoundException(INVALID_ORIGIN);
         }
         if (!countryWithBorders.containsKey(destination)) {
-            throw new PathNotFoundException("Is not possible to find route to this destination");
+            throw new PathNotFoundException(INVALID_DESTINATION);
         }
     }
 

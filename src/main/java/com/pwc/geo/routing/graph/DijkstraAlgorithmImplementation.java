@@ -8,23 +8,24 @@ import java.util.*;
 public class DijkstraAlgorithmImplementation implements DijkstraAlgorithm {
 
     public List<String> findShortestPath(Map<String, List<String>> graph, String origin, String destination) {
+        if (graph != null) {
+            Map<String, Integer> distances = new HashMap<>();
+            Map<String, String> previousNodes = new HashMap<>();
+            PriorityQueue<String> nodes = initializeQueue(graph, origin, distances);
 
-        Map<String, Integer> distances = new HashMap<>();
-        Map<String, String> previousNodes = new HashMap<>();
-        PriorityQueue<String> nodes = initializeQueue(graph, origin, distances);
+            while (!nodes.isEmpty()) {
+                String currentNode = nodes.poll();
 
-        while (!nodes.isEmpty()) {
-            String currentNode = nodes.poll();
-
-            if (currentNode.equals(destination)) {
-                return constructPath(previousNodes, destination);
-            } else if (graph.get(currentNode) != null) {
-                for (String neighbor : graph.getOrDefault(currentNode, Collections.emptyList())) {
-                    int newDist = distances.get(currentNode) + 1; // Assuming all edges have weight 1
-                    if (distances.get(neighbor)!= null && newDist < distances.get(neighbor)) {
-                        distances.put(neighbor, newDist);
-                        previousNodes.put(neighbor, currentNode);
-                        nodes.add(neighbor);
+                if (currentNode.equals(destination)) {
+                    return constructPath(previousNodes, destination);
+                } else if (graph.get(currentNode) != null) {
+                    for (String neighbor : graph.getOrDefault(currentNode, Collections.emptyList())) {
+                        int newDist = distances.get(currentNode) + 1; // Assuming all edges have weight 1
+                        if (distances.get(neighbor) != null && newDist < distances.get(neighbor)) {
+                            distances.put(neighbor, newDist);
+                            previousNodes.put(neighbor, currentNode);
+                            nodes.add(neighbor);
+                        }
                     }
                 }
             }
